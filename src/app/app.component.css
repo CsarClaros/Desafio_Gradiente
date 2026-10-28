@@ -1,0 +1,9 @@
+:host { display:block; }
+:host ::ng-deep .formula sub { font-size: .7em; }
+.matrix-grid { overflow-x:auto; }
+.matrix-grid table { border-collapse:separate; border-spacing:0 .3rem; }
+.matrix-grid th { padding:.35rem .6rem; font-size:.72rem; font-weight:800; color:#64748b; }
+.matrix-grid td {padding:0 .2rem; }
+.matrix-grid input {min-width:78px;max-width:130px;}
+.diagram-label {font-size:11px;fill:#64748b;font-weight:600;}
+.side-scroll {scrollbar-width:thin;}

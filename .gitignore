@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.angular/
+out-tsc/
+coverage/
+.vercel/
+*.tsbuildinfo
+*.log
+.env
+.env.*.local
+.DS_Store
+.directory
+.idea/
+.vscode/*
+!.vscode/extensions.json
+# Mantener package-lock.json versionado después de instalar

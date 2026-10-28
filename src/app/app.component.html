@@ -1,0 +1,260 @@
+<div class="min-h-screen pb-20">
+  <!-- PORTADA / INICIO -->
+  <header class="relative overflow-hidden bg-slate-950 text-white">
+    <div class="pointer-events-none absolute -right-32 -top-40 h-[32rem] w-[32rem] rounded-full bg-teal-600/15 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-56 left-0 h-96 w-96 rounded-full bg-indigo-600/15 blur-3xl"></div>
+    <div class="relative mx-auto max-w-7xl px-4 py-12 sm:px-8 sm:py-16">
+      <div class="mb-6 flex flex-wrap items-center gap-3">
+        <span class="rounded-full border border-teal-500/40 bg-teal-500/10 px-3 py-1.5 text-xs font-extrabold uppercase tracking-[.15em] text-teal-200">UMSA · COM-254 · Métodos Numéricos</span>
+        <span class="rounded-full border border-slate-700 px-3 py-1.5 text-xs font-semibold text-slate-300">Desafío individual · Finanzas</span>
+      </div>
+      <div class="grid gap-10 lg:grid-cols-[1.4fr_.75fr] lg:items-center">
+        <div>
+          <p class="mb-3 text-sm font-bold uppercase tracking-[.18em] text-teal-300">Ingeniería de Sistemas · Simulador financiero</p>
+          <h1 class="max-w-4xl text-3xl font-black leading-tight tracking-tight sm:text-5xl">Gradientes conjugados <span class="text-teal-300">precondicionados</span></h1>
+          <p class="mt-5 max-w-3xl text-base leading-7 text-slate-300">Asignación financiera entre unidades mediante un sistema simétrico definido positivo. Evalúa tres escenarios, compara GC frente a GCP y comprueba la precisión con una solución numérica directa.</p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a class="btn-primary" href="#datos">Modificar modelo <span aria-hidden="true">↓</span></a>
+            <a class="btn-ghost" href="#comparacion">Ver comparación</a>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-slate-700 bg-slate-900/70 p-6 shadow-2xl backdrop-blur">
+          <p class="text-xs font-extrabold uppercase tracking-[.13em] text-teal-300">Presentación académica</p>
+          <p class="mt-3 text-lg font-black leading-snug">Cesar Raymundo Claros Choquemisa</p>
+          <p class="mt-2 text-sm text-slate-300">Carrera de Informática · Universidad Mayor de San Andrés</p>
+          <p class="mt-1 text-sm text-slate-300">Docente: Lic. Brigida Carvajal</p>
+          <div class="mt-5 grid grid-cols-3 gap-2 border-t border-slate-700 pt-4 text-center">
+            <div><strong class="block text-2xl text-white">{{n}}</strong><span class="text-[11px] text-slate-400">Variables</span></div>
+            <div><strong class="block text-2xl text-white">3</strong><span class="text-[11px] text-slate-400">Escenarios</span></div>
+            <div><strong class="block text-2xl text-white">10⁻⁶</strong><span class="text-[11px] text-slate-400">Tolerancia base</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="sticky top-0 z-30 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur" aria-label="Navegación del proyecto">
+    <div class="side-scroll mx-auto flex max-w-7xl gap-1 overflow-x-auto whitespace-nowrap px-4 py-3 sm:px-8">
+      <a *ngFor="let group of groups; trackBy:trackIndex" [href]="'#'+group.id" class="rounded-lg px-3 py-2 text-xs font-bold text-slate-600 transition hover:bg-teal-50 hover:text-teal-800">{{group.label}}</a>
+    </div>
+  </nav>
+
+  <main class="mx-auto max-w-7xl space-y-8 px-4 pt-8 sm:px-8">
+    <section class="grid gap-4 sm:grid-cols-3" aria-label="Resumen del método">
+      <div class="card border-l-4 border-l-teal-600 p-5"><p class="kicker">Método principal</p><h2 class="mt-2 text-lg font-black">GCP / PCG</h2><p class="mt-2 text-sm leading-6 text-slate-600">Resolución iterativa con precondicionador M, residuo y dirección conjugada.</p></div>
+      <div class="card border-l-4 border-l-indigo-500 p-5"><p class="kicker">Control matemático</p><h2 class="mt-2 text-lg font-black">Cholesky + espectro</h2><p class="mt-2 text-sm leading-6 text-slate-600">Simetría, definición positiva, menores principales y números de condición.</p></div>
+      <div class="card border-l-4 border-l-amber-500 p-5"><p class="kicker">Validación software</p><h2 class="mt-2 text-lg font-black">QA reproducible</h2><p class="mt-2 text-sm leading-6 text-slate-600">Escenarios, matrices inválidas, edición dinámica, precondicionamiento y campos vacíos.</p></div>
+    </section>
+
+    <!-- CASO / CONTEXTO -->
+    <section id="caso" class="card scroll-mt-24 overflow-hidden">
+      <div class="border-b border-slate-200 bg-slate-50 px-6 py-5 sm:px-8"><p class="kicker">01 · Fundamento financiero</p><h2 class="section-title mt-1">Caso de estudio: planificación de recursos</h2></div>
+      <div class="grid gap-6 p-6 sm:p-8 lg:grid-cols-2">
+        <div class="space-y-4 text-sm leading-7 text-slate-700">
+          <p>Una organización distribuye recursos entre <strong>cuatro áreas esenciales</strong>. Cada área posee una prioridad financiera y un costo marginal de desvío presupuestario. Existe interdependencia: un cambio en una unidad repercute en las demás.</p>
+          <p>La propuesta minimiza una <strong>función cuadrática de costos/desajustes</strong>. Su condición de primer orden genera el sistema <strong>Ax = b</strong>; la matriz A representa sensibilidades e interdependencias, mientras b cuantifica prioridades de asignación.</p>
+          <p class="rounded-xl border border-amber-200 bg-amber-50 p-3 text-amber-900"><strong>Origen de los datos:</strong> valores sintéticos diseñados para una demostración académica, no presupuestos observados de una entidad real. Se expresan asignaciones x en <strong>miles de bolivianos (miles de Bs)</strong> y coeficientes financieros normalizados.</p>
+        </div>
+        <div>
+          <p class="label">Variables del modelo (n = {{n}})</p>
+          <div class="space-y-2">
+            <div *ngFor="let name of names; let i=index; trackBy:trackIndex" class="flex gap-3 rounded-xl border border-slate-200 px-4 py-3">
+              <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-teal-50 font-black text-teal-800">x{{i+1}}</span>
+              <div><p class="font-bold text-slate-900">{{name}}</p><p class="text-xs text-slate-500">Asignación propuesta, miles de Bs</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mx-6 mb-5 rounded-xl border border-indigo-200 bg-indigo-50 p-4 sm:mx-8">
+        <p class="mb-3 text-xs font-extrabold uppercase tracking-wider text-indigo-800">Enfoque de Ingeniería de Sistemas · proceso financiero</p>
+        <div class="grid gap-2 text-center text-xs font-bold text-indigo-950 sm:grid-cols-5">
+          <div class="rounded-lg border border-indigo-200 bg-white px-3 py-3">Pronóstico y metas</div>
+          <div class="rounded-lg border border-indigo-200 bg-white px-3 py-3">Ajuste de costos e interdependencias (A)</div>
+          <div class="rounded-lg border border-indigo-200 bg-white px-3 py-3">Prioridades y flujos (b)</div>
+          <div class="rounded-lg border border-indigo-200 bg-white px-3 py-3">Cálculo y validación (GCP)</div>
+          <div class="rounded-lg border border-indigo-200 bg-white px-3 py-3">Decisión y control</div>
+        </div>
+        <p class="mt-3 text-xs leading-5 text-indigo-900">Reglas de negocio: registrar áreas y prioridades, conservar coherencia de interdependencias, rechazar matrices no SPD, detectar asignaciones negativas y contrastar los cambios de flujo de recursos entre unidades. Es un flujo analítico de planificación, no un módulo contable transaccional.</p>
+      </div>
+      <div class="mx-6 mb-6 flex flex-wrap items-center gap-2 sm:mx-8 sm:mb-8">
+        <button class="btn-secondary" type="button" (click)="selectedModal='model'">Ver interpretación de A y b</button>
+        <button class="btn-secondary" type="button" (click)="selectedModal='algorithm'">Explicación GCP paso a paso</button>
+        <button class="btn-secondary" type="button" (click)="selectedModal='preconditioner'">¿Por qué precondicionar?</button>
+      </div>
+    </section>
+
+    <!-- FORMULACIÓN -->
+    <section id="formulacion" class="card scroll-mt-24 overflow-hidden">
+      <div class="border-b border-slate-200 bg-slate-50 px-6 py-5 sm:px-8"><p class="kicker">02 · Formulación matemática</p><h2 class="section-title mt-1">Sistema lineal y condición de optimalidad</h2></div>
+      <div class="grid gap-5 p-6 sm:p-8 lg:grid-cols-2">
+        <div>
+          <p class="label">Función objetivo</p>
+          <div class="formula">J(x) = ½ xᵀAx − bᵀx<br>∇J(x) = Ax − b = 0<br>∇²J(x) = A ≻ 0</div>
+          <p class="mt-3 text-sm leading-6 text-slate-600">Cuando A es simétrica definida positiva, J es estrictamente convexa y el sistema Ax = b tiene una solución óptima única.</p>
+        </div>
+        <div>
+          <p class="label">Criterios verificables</p>
+          <div class="formula">A = Aᵀ<br>Δ₁ &gt; 0, Δ₂ &gt; 0, …, Δₙ &gt; 0<br>κ₂(A) = λmáx(A) / λmín(A)</div>
+          <p class="mt-3 text-sm leading-6 text-slate-600">Se comprueba simetría directamente y definición positiva mediante Cholesky / criterio de Sylvester. El número de condición se estima con autovalores de matrices simétricas.</p>
+        </div>
+      </div>
+      <div class="mx-6 mb-5 rounded-xl border border-slate-200 bg-white p-4 sm:mx-8"><p class="label">Sistema de ecuaciones del escenario activo · Ax = b</p><div class="overflow-x-auto font-mono text-xs leading-7 text-slate-700"><p *ngFor="let i of dimensionIndices;trackBy:trackIndex" class="whitespace-nowrap">{{equationText(i)}}</p></div></div>
+      <div class="mx-6 mb-7 rounded-xl border border-indigo-200 bg-indigo-50 p-4 text-sm leading-6 text-indigo-950 sm:mx-8"><strong>Alcance del modelo:</strong> es una optimización cuadrática <em>sin restricciones explícitas</em> sobre la suma de asignaciones o no negatividad. Si se desea imponer un presupuesto total fijo, límites o xᵢ ≥ 0, debe ampliarse a programación cuadrática con restricciones. Las soluciones negativas personalizadas se señalarán en pantalla.</div>
+    </section>
+
+    <!-- DATOS -->
+    <section id="datos" class="card scroll-mt-24 overflow-hidden">
+      <div class="border-b border-slate-200 bg-slate-50 px-6 py-5 sm:px-8">
+        <p class="kicker">03 · Laboratorio interactivo</p>
+        <div class="flex flex-wrap items-center justify-between gap-3"><h2 class="section-title mt-1">Editar matriz, vector y condiciones de ejecución</h2><button type="button" class="btn-secondary" (click)="resetAll()">Restaurar los 3 escenarios</button></div>
+      </div>
+      <div class="p-6 sm:p-8">
+        <div class="mb-5 grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+          <div><label class="label" for="dimension">Dimensión del sistema</label><select id="dimension" class="field max-w-xs" [value]="n" (change)="changeDimension($event)"><option *ngFor="let size of [4,5,6,7,8,9,10]" [value]="size" [selected]="size===n">{{size}} × {{size}}</option></select><p class="mt-1 text-xs text-slate-500">n ≥ 4; interfaz práctica hasta n=10. Cambiar n restaura los datos.</p></div>
+          <div class="text-xs font-semibold text-slate-500">Toda edición se recalcula automáticamente, sin botón adicional.</div>
+        </div>
+        <div class="mb-6 grid gap-3 sm:grid-cols-3">
+          <button *ngFor="let choice of scenarioChoices; trackBy:trackIndex" type="button" (click)="changeScenario(choice.key)" [class.border-teal-600]="active===choice.key" [class.bg-teal-50]="active===choice.key" [class.shadow-md]="active===choice.key" class="rounded-xl border-2 border-slate-200 p-4 text-left transition hover:border-teal-400">
+            <span class="text-xs font-black uppercase tracking-wide text-teal-700">{{choice.short}}</span><strong class="mt-1 block text-base text-slate-950">{{choice.name}}</strong><span class="mt-1 block text-xs leading-5 text-slate-500">{{scenarios[choice.key].subtitle}}</span>
+          </button>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+          <div class="mb-5 flex flex-wrap items-start justify-between gap-4">
+            <div><p class="kicker">Escenario activo</p><h3 class="mt-1 text-xl font-black">{{current.title}}</h3><p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">{{current.justification}}</p></div>
+            <div class="flex flex-wrap gap-2"><button type="button" class="btn-secondary" (click)="symmetrize()">Simetrizar A</button><button type="button" class="btn-secondary" (click)="resetActive()">Restaurar escenario</button></div>
+          </div>
+          <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_200px]">
+            <div class="matrix-grid">
+              <p class="label">Matriz de coeficientes A (celdas editables)</p>
+              <table aria-label="Matriz de coeficientes A" class="w-full text-center">
+                <thead><tr><th></th><th *ngFor="let j of dimensionIndices; trackBy:trackIndex">x{{j+1}}</th></tr></thead>
+                <tbody><tr *ngFor="let i of dimensionIndices; trackBy:trackIndex"><th scope="row">Fila {{i+1}}</th><td *ngFor="let j of dimensionIndices; trackBy:trackIndex"><input type="text" inputmode="decimal" class="data-input" [attr.aria-label]="'A fila '+(i+1)+' columna '+(j+1)" [value]="current.matrix[i][j]" (input)="updateMatrix($event,i,j)"></td></tr></tbody>
+              </table>
+            </div>
+            <div><p class="label">Vector b</p><div class="space-y-1.5"><div *ngFor="let i of dimensionIndices;trackBy:trackIndex" class="flex items-center gap-2"><label class="w-9 text-xs font-black text-slate-500" [for]="'b-'+i">b{{i+1}}</label><input [id]="'b-'+i" type="text" inputmode="decimal" class="data-input" [value]="current.rhs[i]" (input)="updateB($event,i)"></div></div></div>
+          </div>
+        </div>
+        <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div><label for="prec" class="label">Precondicionador M</label><select id="prec" class="field" [value]="preconditioner" (change)="choosePre($event)"><option value="jacobi">Jacobi (diagonal)</option><option value="ssor">SSOR</option><option value="none">Sin precondicionar (M=I)</option></select></div>
+          <div><label for="tol" class="label">Tolerancia relativa</label><input id="tol" type="text" inputmode="decimal" class="field" [value]="tolerance" (input)="updateTol($event)"></div>
+          <div><label for="itermax" class="label">Número máximo de iteraciones</label><input id="itermax" type="text" inputmode="numeric" class="field" [value]="maxIterations" (input)="updateMax($event)"></div>
+          <div><label for="omega" class="label">Relajación ω (solo SSOR)</label><input id="omega" type="text" inputmode="decimal" class="field" [disabled]="preconditioner!=='ssor'" [value]="omega" (input)="updateOmega($event)"></div>
+        </div>
+        <div class="mt-5"><p class="label">Vector inicial x₀ (editable)</p><div class="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-5"><div *ngFor="let i of dimensionIndices;trackBy:trackIndex"><label [for]="'x0-'+i" class="mb-1 block text-xs font-bold text-slate-500">x₀,{{i+1}}</label><input [id]="'x0-'+i" class="data-input" type="text" inputmode="decimal" [value]="x0[i]" (input)="updateX0($event,i)"></div></div></div>
+        <div class="mt-5 rounded-xl border p-4 text-sm" [ngClass]="result.valid?'border-emerald-200 bg-emerald-50 text-emerald-900':'border-rose-200 bg-rose-50 text-rose-900'" role="status" aria-live="polite">
+          <strong>{{result.valid?'✓ Matriz válida y cálculos realizados':'⚠ Entrada o matriz inválida'}}</strong>
+          <p class="mt-1">{{result.message}}</p>
+          <p *ngIf="result.valid" class="mt-1">Simétrica: sí · Definida positiva: sí · <strong>criterio de Sylvester satisfecho</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTADOS -->
+    <section id="resultados" class="card scroll-mt-24 overflow-hidden">
+      <div class="border-b border-slate-200 bg-slate-50 px-6 py-5 sm:px-8"><p class="kicker">04 · Solución numérica</p><h2 class="section-title mt-1">Referencia, GCP, GC y diagnóstico</h2></div>
+      <div *ngIf="result.valid; else invalidResults" class="p-6 sm:p-8">
+        <div class="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div class="metric"><p class="label">Número de condición κ₂(A)</p><p class="break-all text-xl font-black text-slate-900">{{formatSci(result.cond,4)}}</p></div>
+          <div class="metric"><p class="label">κ₂(M⁻¹A) en norma 2</p><p class="break-all text-xl font-black text-teal-800">{{formatSci(result.condPre,4)}}</p></div>
+          <div class="metric"><p class="label">Iteraciones GC / GCP</p><p class="text-2xl font-black">{{result.cg?.iterations}} <span class="text-slate-400">/</span> <span class="text-teal-700">{{result.pcg?.iterations}}</span></p></div>
+          <div class="metric"><p class="label">Residuo relativo final GCP</p><p class="break-all text-xl font-black">{{formatSci(result.pcg?.residual,5)}}</p></div>
+        </div>
+        <div class="grid gap-5 lg:grid-cols-2">
+          <div class="rounded-xl border border-slate-200 p-5"><p class="kicker">Método directo de Cholesky</p><h3 class="mt-1 text-lg font-black">Solución numérica de referencia</h3><div class="formula mt-3">x_ref = {{vectorCompact(result.reference)}}</div><p class="mt-3 text-sm text-slate-500">Residuo relativo directo: {{formatSci(result.referenceResidual,6)}}. No se denomina solución algebraica exacta.</p></div>
+          <div class="rounded-xl border border-teal-200 bg-teal-50/40 p-5"><p class="kicker">Método iterativo principal</p><h3 class="mt-1 text-lg font-black">Solución GCP</h3><div class="formula mt-3">x_GCP = {{vectorCompact(result.pcg?.x||[])}}</div><p class="mt-3 text-sm font-semibold" [ngClass]="result.pcg?.converged?'text-teal-800':'text-amber-800'">{{result.pcg?.converged?'Convergió a la tolerancia solicitada.':'No alcanzó la tolerancia solicitada.'}}</p></div>
+        </div>
+        <div *ngIf="badFinancial" class="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">El sistema produjo asignaciones negativas. Matemáticamente es válido para Ax=b, pero no representa un presupuesto factible sin restricciones de no negatividad.</div>
+        <div class="mt-6 grid gap-5 lg:grid-cols-2">
+          <div class="rounded-xl border border-slate-200 p-4"><h3 class="mb-2 font-black">Residuo inicial r₀ = b − Ax₀</h3><p class="break-all font-mono text-sm text-slate-700">{{vectorCompact(result.initialResidual)}}</p><p class="mt-2 text-xs text-slate-500">Dirección inicial GCP: z₀=M⁻¹r₀, p₀=z₀.</p></div>
+          <div class="rounded-xl border border-slate-200 p-4"><h3 class="mb-2 font-black">Matriz precondicionadora M (numérica)</h3><div class="max-h-44 overflow-auto font-mono text-xs leading-6"><div *ngFor="let row of result.preMatrix;trackBy:trackIndex" class="whitespace-nowrap text-slate-700">[ {{vectorCompact(row)}} ]</div></div></div>
+        </div>
+        <div class="mt-7 grid gap-6 lg:grid-cols-[1.25fr_.8fr]">
+          <div class="min-w-0"><div class="mb-3 flex flex-wrap items-baseline justify-between gap-3"><h3 class="text-lg font-black">Gráfico de convergencia</h3><p class="text-xs text-slate-500">Residuo relativo · escala logarítmica</p></div>
+            <div class="overflow-hidden rounded-xl border border-slate-200 bg-white p-2">
+              <svg class="h-auto w-full" viewBox="0 0 750 275" role="img" aria-label="Curvas del residuo relativo de GC y GCP por iteración">
+                <rect x="46" y="44" width="666" height="190" rx="7" fill="#f8fafc"></rect>
+                <g *ngFor="let level of chartTicks();trackBy:trackIndex"><line x1="46" [attr.y1]="44+(level/-12)*190" x2="712" [attr.y2]="44+(level/-12)*190" stroke="#dbe4ed" stroke-dasharray="3 5"></line><text x="38" [attr.y]="48+(level/-12)*190" text-anchor="end" class="diagram-label">10^{{level}}</text></g>
+                <line x1="46" y1="44" x2="46" y2="234" stroke="#94a3b8"></line><line x1="46" y1="234" x2="712" y2="234" stroke="#94a3b8"></line>
+                <line x1="46" [attr.y1]="chartTolY()" x2="712" [attr.y2]="chartTolY()" stroke="#f59e0b" stroke-dasharray="6 5" stroke-width="2" opacity=".8"></line>
+                <polyline [attr.points]="chartPoints(result.cg)" fill="none" stroke="#6366f1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <polyline [attr.points]="chartPoints(result.pcg)" fill="none" stroke="#0f766e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <text x="380" y="262" text-anchor="middle" class="diagram-label">Iteraciones k (0 → {{chartMaxK()}})</text>
+              </svg>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-5 text-xs font-bold"><span class="text-indigo-600">━━ GC sin precondicionar</span><span class="text-teal-700">━━ GCP</span><span class="text-amber-700">┄ Tolerancia</span></div>
+          </div>
+          <div>
+            <h3 class="mb-3 text-lg font-black">Demostración de SPD</h3>
+            <p class="mb-3 text-sm leading-6 text-slate-600">Los menores principales obtenidos de Cholesky son positivos, como requiere el criterio de Sylvester.</p>
+            <div class="space-y-2"><div *ngFor="let minor of result.minors;let i=index;trackBy:trackIndex" class="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm"><span class="font-bold">Δ{{i+1}}</span><span class="font-mono text-teal-800">{{formatSci(minor,5)}} &gt; 0</span></div></div>
+            <p class="mt-4 text-xs leading-5 text-slate-500">Espectro de A: {{vectorCompact(result.eigenvalues)}}. El cociente espectral de la matriz simétrica equivalente Lₘ⁻¹ A Lₘ⁻ᵀ es <strong>{{formatSci(result.condSym,5)}}</strong>; se distingue de κ₂(M⁻¹A) en norma inducida 2.</p>
+          </div>
+        </div>
+        <div class="mt-7"><div class="mb-3 flex flex-wrap justify-between gap-2"><h3 class="text-lg font-black">Errores por variable</h3><p class="text-xs text-slate-500">Error relativo no definido cuando la referencia vale cero.</p></div>
+          <div class="overflow-x-auto rounded-xl border border-slate-200"><table class="data-table min-w-[760px]"><thead><tr><th>Variable</th><th>Referencia</th><th>GCP</th><th>Error absoluto</th><th>Error relativo</th><th>Error porcentual</th></tr></thead><tbody><tr *ngFor="let item of result.errors;trackBy:trackIndex"><td class="font-extrabold text-teal-700">{{item.label}}</td><td class="font-mono">{{formatSci(item.reference,6)}}</td><td class="font-mono">{{formatSci(item.pcg,6)}}</td><td class="font-mono">{{formatSci(item.abs,5)}}</td><td class="font-mono">{{formatSci(item.relative,5)}}</td><td class="font-mono">{{percent(item.percent)}}</td></tr></tbody></table></div>
+        </div>
+        <div class="mt-7"><h3 class="mb-3 text-lg font-black">Detalle de iteraciones · GCP</h3><div class="max-h-[360px] overflow-auto rounded-xl border border-slate-200"><table class="data-table min-w-[650px]"><thead class="sticky top-0"><tr><th>k</th><th>Vector xₖ</th><th>||b − Axₖ||₂ / ||b||₂</th><th>α</th><th>β</th></tr></thead><tbody><tr *ngFor="let it of result.pcg?.history;trackBy:trackIndex"><td class="font-bold">{{it.k}}</td><td class="font-mono text-xs">{{vectorCompact(it.x)}}</td><td class="font-mono">{{formatSci(it.residual,5)}}</td><td class="font-mono">{{formatSci(it.alpha,4)}}</td><td class="font-mono">{{formatSci(it.beta,4)}}</td></tr></tbody></table></div></div>
+      </div>
+      <ng-template #invalidResults><div class="p-8"><p class="rounded-xl border border-rose-200 bg-rose-50 p-5 text-sm text-rose-800">Completa y corrige los datos en la sección de entrada. No se realizarán cálculos sobre una matriz inválida. {{result.message}}</p></div></ng-template>
+    </section>
+
+    <!-- COMPARACIÓN -->
+    <section id="comparacion" class="card scroll-mt-24 overflow-hidden">
+      <div class="border-b border-slate-200 bg-slate-50 px-6 py-5 sm:px-8"><p class="kicker">05 · Tres escenarios obligatorios</p><div class="flex flex-wrap items-center justify-between gap-4"><h2 class="section-title mt-1">Tabla comparativa de resultados</h2><button class="btn-primary" type="button" (click)="downloadReport()">Exportar resultados .txt</button></div></div>
+      <div class="overflow-x-auto p-4 sm:p-6"><table class="data-table min-w-[900px]"><thead><tr><th>Indicador</th><th>Ideal</th><th>Estrés financiero</th><th>Mal condicionado</th></tr></thead><tbody>
+        <tr><td class="font-bold">Solución numérica de referencia</td><td *ngFor="let k of keys;trackBy:trackIndex" class="font-mono text-xs">{{vectorCompact(analyses[k].reference)}}</td></tr>
+        <tr><td class="font-bold">Solución GCP</td><td *ngFor="let k of keys;trackBy:trackIndex" class="font-mono text-xs">{{vectorCompact(analyses[k].pcg?.x||[])}}</td></tr>
+        <tr><td class="font-bold">Error absoluto por variable</td><td *ngFor="let k of keys;trackBy:trackIndex" class="font-mono text-xs">{{vectorCompact(errorValues(k,'abs'))}}</td></tr>
+        <tr><td class="font-bold">Error porcentual por variable</td><td *ngFor="let k of keys;trackBy:trackIndex" class="font-mono text-xs">{{vectorCompact(errorValues(k,'percent'))}} %</td></tr>
+        <tr><td class="font-bold">Iteraciones GC simple</td><td *ngFor="let k of keys;trackBy:trackIndex">{{analyses[k].cg?.iterations??'—'}}</td></tr>
+        <tr><td class="font-bold">Iteraciones GCP</td><td *ngFor="let k of keys;trackBy:trackIndex" class="font-bold text-teal-700">{{analyses[k].pcg?.iterations??'—'}}</td></tr>
+        <tr><td class="font-bold">Número de condición κ₂(A)</td><td *ngFor="let k of keys;trackBy:trackIndex">{{formatSci(analyses[k].cond,5)}}</td></tr>
+        <tr><td class="font-bold">Número de condición κ₂(M⁻¹A)</td><td *ngFor="let k of keys;trackBy:trackIndex">{{formatSci(analyses[k].condPre,5)}}</td></tr>
+        <tr><td class="font-bold">Condición espectral de la matriz simétrica equivalente</td><td *ngFor="let k of keys;trackBy:trackIndex">{{formatSci(analyses[k].condSym,5)}}</td></tr>
+        <tr><td class="font-bold">Residuo relativo GCP</td><td *ngFor="let k of keys;trackBy:trackIndex">{{formatSci(analyses[k].pcg?.residual,5)}}</td></tr>
+        <tr><td class="font-bold">¿Convergió?</td><td *ngFor="let k of keys;trackBy:trackIndex" [ngClass]="analyses[k].pcg?.converged?'font-bold text-emerald-700':'font-bold text-amber-700'">{{analyses[k].pcg?(analyses[k].pcg?.converged?'Sí':'No'):'No evaluable'}}</td></tr>
+        <tr><td class="font-bold">Interpretación financiera</td><td *ngFor="let k of keys;trackBy:trackIndex" class="text-xs leading-5">{{scenarios[k].financialReading}}</td></tr>
+        <tr><td class="font-bold">Diagnóstico del modelo</td><td *ngFor="let k of keys;trackBy:trackIndex" class="text-xs">{{analyses[k].message}}</td></tr>
+      </tbody></table></div>
+      <div class="mx-6 mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900"><strong>Importante:</strong> las iteraciones de GCP no tienen por qué ser menores para toda matriz ni para todo precondicionador. La mejora se comprueba en el escenario de desbalance diagonal diseñado para Jacobi. Un residuo pequeño tampoco garantiza por sí solo un error pequeño en variables si κ(A) es elevado.</div>
+    </section>
+
+    <!-- QA -->
+    <section id="qa" class="card scroll-mt-24 overflow-hidden">
+      <div class="border-b border-slate-200 bg-slate-50 px-6 py-5 sm:px-8"><p class="kicker">06 · Aseguramiento de calidad</p><div class="flex flex-wrap items-center justify-between gap-4"><h2 class="section-title mt-1">Pruebas funcionales ejecutables</h2><button class="btn-primary" type="button" (click)="runQA()">Ejecutar pruebas automáticas</button></div></div>
+      <div class="p-6 sm:p-8">
+        <p class="mb-4 text-sm leading-6 text-slate-600">Las pruebas utilizan copias controladas de los tres escenarios de cuatro variables. No sobrescriben tus datos editados. Incluyen entrada, resultado esperado, resultado obtenido y conclusión.</p>
+        <div *ngIf="qa.length;else emptyQA" class="mb-4 rounded-xl border border-teal-200 bg-teal-50 p-4 text-sm font-bold text-teal-900">{{totalQA}} / {{qa.length}} pruebas superadas.</div>
+        <ng-template #emptyQA><div class="mb-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">Las pruebas aún no se han ejecutado. Haz clic en «Ejecutar pruebas automáticas» para registrar resultados reales.</div></ng-template>
+        <div *ngIf="qa.length" class="overflow-x-auto rounded-xl border border-slate-200"><table class="data-table min-w-[1000px]"><thead><tr><th>Prueba</th><th>Entrada</th><th>Esperado</th><th>Obtenido</th><th>Conclusión</th></tr></thead><tbody><tr *ngFor="let item of qa;trackBy:trackIndex"><td class="font-bold">{{item.code}}<span class="mt-1 block text-xs font-normal">{{item.name}}</span></td><td>{{item.input}}</td><td>{{item.expected}}</td><td class="font-mono text-xs">{{item.obtained}}</td><td><span class="inline-flex rounded-full px-2 py-1 text-xs font-black" [ngClass]="item.passed?'bg-emerald-100 text-emerald-800':'bg-rose-100 text-rose-800'">{{item.passed?'APROBADO':'FALLIDO'}}</span><p class="mt-2 text-xs">{{item.conclusion}}</p></td></tr></tbody></table></div>
+        <div class="mt-5 rounded-xl border border-indigo-200 bg-indigo-50 p-4 text-sm leading-6 text-indigo-950"><strong>Prueba visual adicional (manual):</strong> en una celda A, escribe lentamente <code>1.2345</code>, después borra un dígito y escribe <code>1e-3</code>. Comprueba que el cursor permanece en el mismo campo y que el cálculo se pausa si el texto es temporalmente inválido (por ejemplo, <code>1e</code>). Cambia de escenario y regresa: cada tabla debe conservar lo editado.</div>
+      </div>
+    </section>
+
+    <!-- CONCLUSIONES -->
+    <section id="conclusiones" class="scroll-mt-24 overflow-hidden rounded-2xl border border-teal-800 bg-gradient-to-br from-slate-950 via-slate-900 to-teal-950 p-7 text-white shadow-academic-lg sm:p-9">
+      <p class="text-xs font-black uppercase tracking-[.15em] text-teal-300">07 · Análisis crítico y referencias</p>
+      <h2 class="mt-2 text-2xl font-black">Conclusiones matemáticas, financieras y de software</h2>
+      <div class="mt-6 grid gap-5 lg:grid-cols-3">
+        <div class="rounded-xl border border-white/10 bg-white/5 p-5"><h3 class="font-black text-teal-200">Convergencia</h3><p class="mt-2 text-sm leading-6 text-slate-200">La SPD de A garantiza solución única; GCP transforma el sistema mediante un precondicionador SPD. La rapidez depende del espectro y de la selección de M, no solo de la tolerancia.</p></div>
+        <div class="rounded-xl border border-white/10 bg-white/5 p-5"><h3 class="font-black text-teal-200">Interpretación financiera</h3><p class="mt-2 text-sm leading-6 text-slate-200">Los cambios en b y A reflejan prioridades y sensibilidades de costo. La comparación permite distinguir perturbaciones de demanda de un problema de mal escalamiento.</p></div>
+        <div class="rounded-xl border border-white/10 bg-white/5 p-5"><h3 class="font-black text-teal-200">Calidad del software</h3><p class="mt-2 text-sm leading-6 text-slate-200">La entrada editable y la validación preventiva evitan resolver matrices incompatibles. La solución directa, el residual verdadero y QA permiten comprobar resultados de forma reproducible.</p></div>
+      </div>
+      <div class="mt-6 grid gap-4 text-sm leading-6 text-slate-300 lg:grid-cols-2">
+        <div><p class="font-bold text-white">Referencia principal</p><p>Suñagua S., P. (2020). <em>Método de Gradientes Conjugados Precondicionado</em>. Revista Boliviana de Matemática – UMSA 04, pp. 2–7. <a class="font-bold text-teal-300 underline hover:text-white" [href]="sourceUrl" target="_blank" rel="noopener noreferrer">Consultar artículo original</a></p></div>
+        <div><p class="font-bold text-white">Bibliografía complementaria</p><p>Golub, G. H. y Van Loan, C. F. (2013). <em>Matrix Computations</em>, 4.ª ed.; Saad, Y. (2003). <em>Iterative Methods for Sparse Linear Systems</em>, 2.ª ed. Los datos financieros son didácticos y están documentados en el README.</p></div>
+      </div>
+      <div class="mt-6 border-t border-slate-700 pt-4 text-xs text-slate-400">La aplicación funciona de forma local en el navegador: no requiere API, credenciales, cuentas ni base de datos. Puede desplegarse como sitio estático público en Vercel.</div>
+    </section>
+    <footer class="pt-4 text-center text-xs text-slate-500">Universidad Mayor de San Andrés · COM-254 Métodos Numéricos · Aplicación académica de Gradientes Conjugados Precondicionados</footer>
+  </main>
+
+  <div *ngIf="selectedModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 p-4" (click)="dismissModal()" role="presentation">
+    <div class="max-h-[88vh] w-full max-w-2xl overflow-auto rounded-2xl bg-white p-6 shadow-2xl sm:p-8" (click)="$event.stopPropagation()" role="dialog" aria-modal="true" aria-label="Explicación académica">
+      <div class="mb-4 flex items-center justify-between gap-4"><h2 class="text-xl font-black">{{selectedModal==='model'?'Modelo financiero':selectedModal==='algorithm'?'Algoritmo GCP':selectedModal==='qa'?'Pruebas de calidad':'Precondicionamiento'}}</h2><button class="btn-secondary" (click)="dismissModal()" type="button">Cerrar ×</button></div>
+      <ng-container *ngIf="selectedModal==='model'"><p class="text-sm leading-7 text-slate-700">Una función objetivo de desajuste presupuestario J(x)=½xᵀAx−bᵀx permite combinar penalización del desvío por unidad (diagonal de A) y sensibilidad entre unidades (coeficientes fuera de diagonal). b expresa prioridades financieras ponderadas. Al resolver ∇J(x)=0 se obtiene Ax=b. Para los casos predeterminados, b se construye a partir de asignaciones objetivo didácticas; el usuario puede reemplazarlo. No se modela un presupuesto total fijo.</p><div class="formula mt-4">aᵢᵢ : sensibilidad/cuadrática marginal<br>aᵢⱼ : interdependencia entre dos unidades<br>bᵢ : prioridad marginal ponderada<br>xᵢ : miles de bolivianos asignados</div></ng-container>
+      <ng-container *ngIf="selectedModal==='algorithm'"><p class="text-sm leading-7 text-slate-700">Según el algoritmo de Suñagua (2020), se inicia en x₀ y se calcula r₀ = b−Ax₀. Para cada iteración se resuelve M zₖ = rₖ, se actualiza la dirección conjugada pₖ y se determina αₖ. El procedimiento implementado es equivalente a la formulación clásica PCG con β de Fletcher–Reeves precondicionado.</p><div class="formula mt-4">r₀ = b − Ax₀ ; z₀ = M⁻¹r₀ ; p₀ = z₀<br>αₖ = (rₖᵀzₖ) / (pₖᵀApₖ)<br>xₖ₊₁ = xₖ + αₖ pₖ<br>rₖ₊₁ = rₖ − αₖ A pₖ<br>zₖ₊₁ = M⁻¹ rₖ₊₁<br>βₖ = (rₖ₊₁ᵀ zₖ₊₁) / (rₖᵀ zₖ)<br>pₖ₊₁ = zₖ₊₁ + βₖ pₖ</div><p class="mt-4 text-sm leading-6">Criterio: ||b−Axₖ||₂/||b||₂ &lt; 10⁻⁶ por defecto. Se usa el residuo verdadero para verificar la parada. GC simple corresponde a M=I.</p></ng-container>
+      <ng-container *ngIf="selectedModal==='preconditioner'"><p class="text-sm leading-7 text-slate-700">Jacobi establece M=diag(A) y resulta conveniente cuando la principal dificultad proviene de escalas diagonales muy diferentes. SSOR forma una aproximación SPD utilizando la diagonal y las componentes estrictamente inferiores/superiores; puede ser útil cuando hay acoplamiento más fuerte. Elegir M=I reproduce GC.</p><div class="formula mt-4">M_J = diag(A)<br>M_SSOR = (D+ωL)D⁻¹(D+ωU) / [ω(2−ω)]<br>0 &lt; ω &lt; 2 ; A = D + L + U</div><p class="mt-3 text-sm text-slate-700">Se muestran dos indicadores distintos: la condición κ₂(M⁻¹A) mediante normas 2 inducidas y el cociente λmáx/λmín de la matriz simétrica Lₘ⁻¹ A Lₘ⁻ᵀ, semejante a M⁻¹A y pertinente para analizar PCG.</p></ng-container>
+    </div>
+  </div>
+</div>
